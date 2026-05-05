@@ -2,23 +2,14 @@ package main
 
 import (
 	"fmt"
+	"os"
 
-	"github.com/awaleha/wg-messenger/internal/transport"
+	"github.com/awaleha/wg-messenger/internal/cli"
 )
 
 func main() {
-
-	fmt.Println("wgmsg: WireGuard messenger")
-
-	//Starting server, returning errors
-	errCh := make(chan error, 1)
-
-	go func() {
-		errCh <- transport.Server()
-	}()
-
-	for {
-		transport.Client()
+	if err := cli.Execute(); err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
 	}
-
 }

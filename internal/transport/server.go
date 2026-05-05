@@ -21,12 +21,12 @@ func handleConnection(conn net.Conn, f *os.File) {
 	fmt.Fprintf(conn, "%s", "echo "+string(buf[:n]))
 }
 
-func Server() error {
-	fmt.Println("<Server> Starting Server...")
-	ln, err := net.Listen("tcp", "127.0.0.1:7777")
+func Server(socket string) error {
+	ln, err := net.Listen("tcp", socket)
 	if err != nil {
 		return err
 	}
+	fmt.Println("<Server> listening on socket -> ", socket)
 	defer ln.Close()
 
 	//Output file creation

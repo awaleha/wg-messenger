@@ -1,27 +1,20 @@
 package transport
 
 import (
-	"bufio"
 	"fmt"
 	"log"
 	"net"
-	"os"
 )
 
-func Client() error {
+func Client(socket string, msg string) error {
 	//Create tcp socket
-	conn, err := net.Dial("tcp", "127.0.0.1:7777")
+	conn, err := net.Dial("tcp", socket)
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	//Scanner for stdnin
-	scanner := bufio.NewReader(os.Stdin)
-	fmt.Print("<Client> Please enter message: ")
-	line, err := scanner.ReadString('\n')
-
-	fmt.Println("<Client> Sending message...")
-	fmt.Fprintf(conn, "%s", line)
+	fmt.Println("<Client> Sending message to ", socket)
+	fmt.Fprintf(conn, "%s", msg)
 
 	//Read response
 	buf := make([]byte, 1024)
