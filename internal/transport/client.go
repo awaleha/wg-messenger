@@ -4,27 +4,22 @@ import (
 	"fmt"
 	"log"
 	"net"
+
+	"github.com/awaleha/wg-messenger/internal/messages"
 )
 
-func Client(socket string, msg string) error {
+func Client(socket string, body string) error {
 	//Create tcp socket
 	conn, err := net.Dial("tcp", socket)
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	fmt.Println("<Client> Sending message to ", socket)
-	fmt.Fprintf(conn, "%s", msg)
+	msg := messages.NewTextMessage("client", "server", body)
 
-	//Read response
-	buf := make([]byte, 1024)
-	n, err := conn.Read(buf)
-	if err != nil {
-		log.Println(err)
-	}
-
-	fmt.Println("<Client> " + string(buf[:n]))
+	fmt.Println("Sending message", msg.Body, "to", msg.To)
+	err = messages.Encode(conn, msg)
 
 	conn.Close()
-	return nil
+	return err
 }

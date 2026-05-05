@@ -5,20 +5,20 @@ import (
 	"log"
 	"net"
 	"os"
+
+	"github.com/awaleha/wg-messenger/internal/messages"
 )
 
 func handleConnection(conn net.Conn, f *os.File) {
 	defer conn.Close()
+
 	//read from the client
-	buf := make([]byte, 1024)
-	n, err := conn.Read(buf)
+	msg, err := messages.Decode(conn)
 	if err != nil {
 		fmt.Fprintln(f, "Error reading from user: "+err.Error())
 	}
 
-	fmt.Fprintln(f, "<Server> Received Message: ", string(buf[:n]), "From <Client>: ", conn.RemoteAddr())
-
-	fmt.Fprintf(conn, "%s", "echo "+string(buf[:n]))
+	fmt.Fprintln(f, msg.From, "->", msg.To, ":", msg.Body)
 }
 
 func Server(socket string) error {

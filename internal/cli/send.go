@@ -1,6 +1,9 @@
 package cli
 
 import (
+	"log"
+	"strings"
+
 	"github.com/awaleha/wg-messenger/internal/transport"
 	"github.com/spf13/cobra"
 )
@@ -12,6 +15,10 @@ var sendCmd = &cobra.Command{
 	Short: "Send a message",
 	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
+
+		if strings.TrimSpace(args[0]) == "" {
+			log.Fatal("message cannot be empty")
+		}
 
 		msg := args[0]
 		transport.Client(sendAddr, msg)
