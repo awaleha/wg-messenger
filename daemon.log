@@ -1,0 +1,4 @@
+time=2026-05-05T06:25:01.484-04:00 level=INFO msg="Starting daemon log"
+time=2026-05-05T06:25:01.486-04:00 level=INFO msg="<daemon> listening on socket -> " addr=127.0.0.1:7777
+[message] client -> server : test123
+time=2026-05-05T06:25:47.239-04:00 level=INFO msg="shutting down daemon..."
